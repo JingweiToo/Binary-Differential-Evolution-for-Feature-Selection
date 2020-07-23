@@ -38,7 +38,7 @@ for i=1:N
   end
 end
 curve=inf; fitG=inf; Xnew=zeros(N,D); t=1; 
-figure(1); clf; axis([1 100 0 0.3]); xlabel('Number of Iterations');
+figure(1); clf; axis([1 100 0 0.2]); xlabel('Number of generations');
 ylabel('Fitness Value'); title('Convergence Curve'); grid on;
 %---Iterations start-------------------------------------------------------
 while t <= T
