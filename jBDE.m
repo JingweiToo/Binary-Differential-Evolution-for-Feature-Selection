@@ -1,25 +1,4 @@
-%-------------------------------------------------------------------------%
-%  Binary Differential Evolution (BDE) source codes demo version          %
-%                                                                         %
-%  Programmer: Jingwei Too                                                %
-%                                                                         %
-%  E-Mail: jamesjames868@gmail.com                                        %
-%-------------------------------------------------------------------------%
-
-function [sFeat,Sf,Nf,curve]=jBDE(feat,label,N,T,CR)
-%---Inputs-----------------------------------------------------------------
-% feat:  features
-% label: labelling
-% N:     Number of vectors
-% T:     Maximum number of iterations
-% CR:    Crossover rate
-%---Outputs----------------------------------------------------------------
-% sFeat: Selected features
-% Sf:    Selected feature index
-% Nf:    Number of selected features
-% curve: Convergence curve
-%--------------------------------------------------------------------------
-
+function [sFeat,Sf,Nf,curve]=jBDE(feat,label,N,T,CR,HO)
 
 fun=@jFitnessFunction; 
 D=size(feat,2); X=zeros(N,D); 
@@ -32,14 +11,12 @@ for i=1:N
 end
 fit=zeros(1,N); fitG=inf;
 for i=1:N
-  fit(i)=fun(feat,label,X(i,:)); 
+  fit(i)=fun(feat,label,X(i,:),HO); 
   if fit(i) < fitG
     fitG=fit(i); Xgb=X(i,:);
   end
 end
 curve=inf; fitG=inf; Xnew=zeros(N,D); t=1; 
-figure(1); clf; axis([1 100 0 0.2]); xlabel('Number of generations');
-ylabel('Fitness Value'); title('Convergence Curve'); grid on;
 %---Iterations start-------------------------------------------------------
 while t <= T
 	for i=1:N
@@ -65,7 +42,7 @@ while t <= T
     end
   end
   for i=1:N
-    Fnew=fun(feat,label,Xnew(i,:));
+    Fnew=fun(feat,label,Xnew(i,:),HO);
     if Fnew <= fit(i)
       X(i,:)=Xnew(i,:); fit(i)=Fnew;
     end
@@ -74,8 +51,7 @@ while t <= T
     end
   end
   curve(t)=fitG; 
-  pause(1e-20); hold on;
-  CG=plot(t,fitG,'Color','r','Marker','.'); set(CG,'MarkerSize',5);
+  fprintf('\nIteration %d Best (BDE)= %f',t,curve(t))
   t=t+1;
 end
 Pos=1:D; Sf=Pos(Xgb==1); Nf=length(Sf); sFeat=feat(:,Sf);
