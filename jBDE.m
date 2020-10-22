@@ -16,7 +16,7 @@ for i=1:N
     fitG=fit(i); Xgb=X(i,:);
   end
 end
-curve=inf; fitG=inf; Xnew=zeros(N,D); t=1; 
+curve=inf; Xnew=zeros(N,D); t=1; 
 %---Iterations start-------------------------------------------------------
 while t <= T
 	for i=1:N
