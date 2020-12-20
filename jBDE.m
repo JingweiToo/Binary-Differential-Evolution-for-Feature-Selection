@@ -1,60 +1,76 @@
-function [sFeat,Sf,Nf,curve]=jBDE(feat,label,N,T,CR,HO)
+function [sFeat,Sf,Nf,curve] = jBDE(feat,label,N,max_Iter,CR,HO)
 
-fun=@jFitnessFunction; 
-D=size(feat,2); X=zeros(N,D); 
-for i=1:N
-  for d=1:D
+fun = @jFitnessFunction; 
+dim = size(feat,2); 
+X   = zeros(N,dim); 
+for i = 1:N
+  for d = 1:dim
     if rand() > 0.5
-      X(i,d)=1;
+      X(i,d) = 1;
     end
   end
 end
-fit=zeros(1,N); fitG=inf;
-for i=1:N
-  fit(i)=fun(feat,label,X(i,:),HO); 
+fit  = zeros(1,N);
+fitG = inf;
+for i = 1:N
+  fit(i) = fun(feat,label,X(i,:),HO); 
   if fit(i) < fitG
-    fitG=fit(i); Xgb=X(i,:);
+    fitG = fit(i); 
+    Xgb  = X(i,:);
   end
 end
-curve=inf; Xnew=zeros(N,D); t=1; 
-%---Iterations start-------------------------------------------------------
-while t <= T
-	for i=1:N
-    R=randperm(N); R(R==i)=[];
-    r1=R(1); r2=R(2); r3=R(3);
-    jrand=randi([1,D]); 
-    for d=1:D
-      if X(r1,d)==X(r2,d) 
-        diffV=0;
+MV   = zeros(N,dim);
+Xnew = zeros(N,dim);
+
+curve = inf; 
+t = 1; 
+%---Iterations start--------------------------------------------------
+while t <= max_Iter
+	for i = 1:N
+    R     = randperm(N);  R(R == i) = [];
+    r1    = R(1); 
+    r2    = R(2); 
+    r3    = R(3);
+    for d = 1:dim
+      if X(r1,d) == X(r2,d) 
+        diffV = 0;
       else
-        diffV=X(r1,d); 
+        diffV = X(r1,d); 
       end
-      if diffV==1
-        MV=1;
+      if diffV == 1
+        MV(i,d) = 1;
       else
-        MV=X(r3,d);
+        MV(i,d) = X(r3,d);
       end
-      if d==jrand || rand() <= CR
-        Xnew(i,d)=MV;
+    end
+    jrand = randi([1,dim]); 
+    for d = 1:dim
+      if rand() <= CR  ||  d == jrand 
+        Xnew(i,d) = MV(i,d);
       else
-        Xnew(i,d)=X(i,d);
+        Xnew(i,d) = X(i,d);
       end 
     end
   end
-  for i=1:N
-    Fnew=fun(feat,label,Xnew(i,:),HO);
+  for i = 1:N
+    Fnew = fun(feat,label,Xnew(i,:),HO);
     if Fnew <= fit(i)
-      X(i,:)=Xnew(i,:); fit(i)=Fnew;
+      X(i,:) = Xnew(i,:);
+      fit(i) = Fnew;
     end
     if fit(i) < fitG
-      fitG=fit(i); Xgb=X(i,:);
+      fitG = fit(i); 
+      Xgb  = X(i,:);
     end
   end
-  curve(t)=fitG; 
+  curve(t) = fitG; 
   fprintf('\nIteration %d Best (BDE)= %f',t,curve(t))
-  t=t+1;
+  t = t + 1;
 end
-Pos=1:D; Sf=Pos(Xgb==1); Nf=length(Sf); sFeat=feat(:,Sf);
+Pos   = 1:dim;
+Sf    = Pos(Xgb == 1);
+Nf    = length(Sf);
+sFeat = feat(:,Sf);
 end
 
 
