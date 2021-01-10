@@ -1,25 +1,29 @@
 # Binary Differential Evolution for Feature Selection
 
+[![View Binary Differential Evolution for Feature Selection on File Exchange](https://www.mathworks.com/matlabcentral/images/matlab-file-exchange.svg)](https://www.mathworks.com/matlabcentral/fileexchange/71515-binary-differential-evolution-for-feature-selection)
+[![License](https://img.shields.io/badge/license-BSD_3-yellow.svg)](https://github.com/JingweiToo/Binary-Differential-Evolution-for-Feature-Selection/blob/master/LICENSE)
+[![GitHub release](https://img.shields.io/badge/release-1.3-green.svg)](https://github.com/JingweiToo/Binary-Differential-Evolution-for-Feature-Selection)
+
 ![Wheel](https://www.mathworks.com/matlabcentral/mlc-downloads/downloads/f2a7eded-0f65-4980-bf79-dcb027c792a0/f1b6049d-781a-4216-91b7-c4e36c746b9f/images/screenshot.PNG)
 
 
 ## Introduction
 * This toolbox offers Binary Differential Evolution ( BDE ) method  
-* The < Main.m file > illustrates the example of how BDE can solve the feature selection problem using benchmark data-set.
+* The `Main` file illustrates the example of how BDE can solve the feature selection problem using benchmark data-set.
 
 ## Input
-* *feat*     : feature vector ( Instances *x* Features )
-* *label*    : label vector ( Instances *x* 1 )
-* *N*        : number of solutions
-* *max_Iter* : maximum number of iterations
-* *CR*       : crossover rate
+* *`feat`*     : feature vector ( Instances *x* Features )
+* *`label`*    : label vector ( Instances *x* 1 )
+* *`N`*        : number of solutions
+* *`max_Iter`* : maximum number of iterations
+* *`CR`*       : crossover rate
 
 
 ## Output
-* *sFeat*    : selected features
-* *Sf*       : selected feature index
-* *Nf*       : number of selected features
-* *curve*    : convergence curve
+* *`sFeat`*    : selected features
+* *`Sf`*       : selected feature index
+* *`Nf`*       : number of selected features
+* *`curve`*    : convergence curve
 
 
 ### Example
